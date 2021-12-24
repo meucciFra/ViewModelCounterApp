@@ -4,3 +4,9 @@ It has the purpose to learn Andorid and the App Architecture without any particu
 
 I know Java but Java and Java API are so vaste that I always feel I got 5% of the whole picture. 
 So, that's why I ignored the Google suggestion to start developing new apps with Kotlin (one more think to leanr) in 2021 to avoid adding complexity over complex topic
+
+
+The project uses following library:
+https://github.com/square/retrofit
+
+Also, it uses http://jsonplaceholder.typicode.com/ to fetch sample JSON data from the wonderful service: https://my-json-server.typicode.com/
