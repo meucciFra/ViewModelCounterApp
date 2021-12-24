@@ -1,13 +1,8 @@
 package com.example.viewmodelcounter;
 
 import android.app.Application;
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Calendar;
