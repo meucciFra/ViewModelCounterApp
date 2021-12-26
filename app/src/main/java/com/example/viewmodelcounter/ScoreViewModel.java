@@ -26,7 +26,6 @@ public class ScoreViewModel extends AndroidViewModel {
         repositoryScore = new ScoreRepository(application);
     }
 
-
     LiveData<List<Score>> getAllScores() {
         scores = repositoryScore.getAll();
         return scores;

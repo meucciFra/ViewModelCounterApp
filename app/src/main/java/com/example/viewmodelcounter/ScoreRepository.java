@@ -1,6 +1,8 @@
 package com.example.viewmodelcounter;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,11 +12,14 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ScoreRepository {
-    //This is the Single Source of Truth (SSOT) Class responsible for delivering Scores
+    //This is the Single Source of Truth (SSoT) Class responsible for delivering Scores
 
     //A RAM Cached representation of the Score Object
     private LiveData<List<Score>> scoreCache;
@@ -54,9 +59,7 @@ public class ScoreRepository {
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     public void setScore(Score score) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            scoreDao.updateScore(score);
-        });
+        AppDatabase.databaseWriteExecutor.execute(() -> scoreDao.updateScore(score));
     }
 
     public Score initScore(){
@@ -66,7 +69,7 @@ public class ScoreRepository {
         score.setScoreValue(0); //init the Score to 0
         score.setScoreDate(Calendar.getInstance().getTime()); //Init the Date to current date
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            id[0] = new Integer((int) scoreDao.insertScore(score)); //get the id given by Database and it adds it in the Object
+            id[0] = (int) scoreDao.insertScore(score); //get the id given by Database and it adds it in the Object
         });
         while(id[0]==null){
             //STAY HERE TILL THE DATABASE RESPOND
@@ -83,15 +86,15 @@ public class ScoreRepository {
 
     private void refreshScore(){
         //CHECK IF THE LAST CALL IS MORE RECENT THAN FRESH_TIMEOUT_IN_MINUTES
-        long delta;
-        if(lastCall== null){ //lastCall was never set, this force the query to the webService and set lastCall
+        /*long delta;
+        if(lastCall== null){ //if lastCall was never set, this force the query to the webService and set lastCall
             delta = FRESH_TIMEOUT_IN_SECONDS+1;
             lastCall.getInstance();
         }else {
             delta = Duration.between( Calendar.getInstance().toInstant(), lastCall.toInstant() ).getSeconds();
         }
-        /*
-        if( delta > FRESH_TIMEOUT_IN_SECONDS ){
+        if( delta > FRESH_TIMEOUT_IN_SECONDS ){*/
+        // It gets the score from the WebService
             executorService.execute(() -> {
                 Call<List<Score>> scoreCall = scoreWebService.getAll();
                 //This is ASYNCHRONOUS Call that you can debug it and check the response
@@ -103,7 +106,7 @@ public class ScoreRepository {
                             List<Score> refreshedScores = response.body();
                             for(int i = 0 ; i<refreshedScores.size(); i++){
                                 // HERE I'M REFRESHING THE LOCAL DATABASE WITH DATA FRESH DATA FROM WebService
-                                scoreDao.updateScore(refreshedScores.get(i));
+                                setScore(refreshedScores.get(i));
                             }
                         });
                     }
@@ -113,6 +116,6 @@ public class ScoreRepository {
                     }
                 });
             });
-        }*/
+        //}
     }
 }

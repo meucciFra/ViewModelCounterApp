@@ -17,8 +17,6 @@ import java.text.SimpleDateFormat;
 public class MainActivity extends Logger {
 
     private static final String TAG = MainActivity.class.getName();
-    // Tracks the score for Team A
-    int score = 0;
     private ScoreViewModel model;
 
 
@@ -50,20 +48,6 @@ public class MainActivity extends Logger {
         //INIT Score
         model.initScore();
         model.getScore().observe(this, scoreObserver);
-
-
-        /*//SETUP ViewModel
-        model = new ViewModelProvider(this).get(ScoreViewModel.class);
-        // Create the observer which updates the UI.
-        final Observer<Integer> scoreObserver = new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable final Integer newScore) {
-                // Update the UI, in this case, a TextView.
-                display(newScore);
-            }
-        };
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getScoreById(0).observe(this, scoreObserver);*/
     }
 
     public void addOne() {
