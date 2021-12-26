@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 public class MainActivity extends Logger {
 
     private static final String TAG = MainActivity.class.getName();
+    public static final String EXTRA_MESSAGE = TAG+".MESSAGE";
     private ScoreViewModel model;
 
 
@@ -25,9 +27,9 @@ public class MainActivity extends Logger {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //SETUP BUTTONS
-        Button button = (Button) findViewById(R.id.button_add);
-        button.setOnClickListener(new View.OnClickListener() {
+        //SETUP ADD BUTTON
+        Button addButton = (Button) findViewById(R.id.button_add);
+        addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "Adding 1");
                 addOne();
@@ -44,10 +46,21 @@ public class MainActivity extends Logger {
                 display(newScore.getScoreValue());
             }
         };
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         //INIT Score
         model.initScore();
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         model.getScore().observe(this, scoreObserver);
+
+
+        //SETUP VIEW WEB RESULTS BUTTON
+        Button viewWeResultsButton = (Button) findViewById(R.id.button_goto_webresults);
+        viewWeResultsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d(TAG, "Go to Web Results Activity");
+                startWebResults(v);
+            }
+        });
+
     }
 
     public void addOne() {
@@ -68,6 +81,13 @@ public class MainActivity extends Logger {
     public void display(Integer score) {
         TextView scoreView = (TextView) findViewById(R.id.textview_score);
         scoreView.setText(String.valueOf(score));
+    }
+
+    /** Called when the user taps the button_goto_webresults button */
+    public void startWebResults(View view) {
+        Intent intent = new Intent(this, DisplayWebResultsActivity.class);
+        intent.putExtra(EXTRA_MESSAGE,"view_web_results");
+        startActivity(intent);
     }
 
 }

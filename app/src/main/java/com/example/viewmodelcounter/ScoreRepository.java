@@ -53,7 +53,7 @@ public class ScoreRepository {
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<Score>> getAll(){
         // THE SOURCE OF TRUTH IS THE Local Database so the WebService is used to update the Local Database
-        refreshScore(); // try to refresh data if possible from Github Api
+        //refreshScore(); // try to refresh data if possible from Github Api
         return  scoreDao.getAllLive();// return a Data directly from the database.
     }
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
@@ -80,7 +80,7 @@ public class ScoreRepository {
 
     public LiveData<Score> getScoreById(int id){
         // THE SOURCE OF TRUTH IS THE Local Database so the WebService is used to update the Local Database
-        refreshScore(); // try to refresh data if possible from Github Api
+        //refreshScore(); // try to refresh data if possible from Github Api
         return scoreDao.getLiveScoreById(id); // return a Data directly from the database.
     }
 
