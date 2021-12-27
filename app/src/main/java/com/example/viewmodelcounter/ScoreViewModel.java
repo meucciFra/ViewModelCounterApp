@@ -33,6 +33,7 @@ public class ScoreViewModel extends AndroidViewModel {
 
     public void initScore(){
         if (score.getValue()==null){
+            //It enters here when change activity, while keep the value when rotating the screen
             score.setValue(repositoryScore.initScore());
         }
     }

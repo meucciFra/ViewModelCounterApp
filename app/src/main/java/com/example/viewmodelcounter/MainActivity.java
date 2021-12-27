@@ -27,6 +27,7 @@ public class MainActivity extends Logger {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         //SETUP ADD BUTTON
         Button addButton = (Button) findViewById(R.id.button_add);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +49,7 @@ public class MainActivity extends Logger {
         };
         //INIT Score
         model.initScore();
+
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         model.getScore().observe(this, scoreObserver);
 
